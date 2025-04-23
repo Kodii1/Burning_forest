@@ -1,0 +1,10 @@
+/target/
+
+*.swp
+*.swo
+*.swn
+
+*rs.bk
+
+.DS_Store
+Thumb.db
