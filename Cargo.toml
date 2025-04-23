@@ -5,4 +5,3 @@ edition = "2024"
 
 [dependencies]
 nalgebra = "0.33.2"
-eframe = "0.31.1"
