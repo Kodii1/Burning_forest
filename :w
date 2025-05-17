@@ -1,75 +1,19 @@
-use std::{
-    io::stdout,
-    time::{Duration, Instant},
-};
+use crate::forest::Forest;
+mod forest;
+// use crate::boosted::Forest;
+mod boosted; // RAM * 2 but 2/3 times faster
 
-use color_eyre::Result;
-use crossterm::{
-    event::{DisableMouseCapture, EnableMouseCapture, KeyEventKind},
-    ExecutableCommand,
-};
-
-use crossterm::event::{self, Event, KeyCode};
-
-use ratatui::{backend::Backend, Terminal};
-
-mod app;
-mod tree;
-mod ui;
-use crate::{
-    app::{App, CurrentScreen},
-    ui::ui2,
-};
-
-fn main() -> Result<()> {
-    color_eyre::install()?;
-    stdout().execute(EnableMouseCapture)?;
-    let mut terminal = ratatui::init();
-    let mut app = App::new(70, 100, 100);
-    App::create_forest(&mut app.forest, app.percent, app.size.0, app.size.1);
-    App::fire_random_tree(&mut app.forest);
-    let _ = run_app(&mut terminal, &mut app);
-    ratatui::restore();
-    stdout().execute(DisableMouseCapture)?;
-    Ok(())
-}
-
-pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> std::io::Result<bool> {
-    let tick_rate = Duration::from_millis(16);
-    let last_tick = Instant::now();
-
-    App::spread_fire(&mut app.forest);
-    loop {
-        terminal.draw(|f| ui2(f, app))?;
-
-        let timeout = tick_rate.saturating_sub(last_tick.elapsed());
-
-        if event::poll(timeout)? {
-            if let Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Release {
-                    continue;
-                }
-
-                match app.current_screen {
-                    CurrentScreen::Main => match key.code {
-                        KeyCode::Char('q') => {
-                            app.current_screen = CurrentScreen::Exiting;
-                        }
-                        _ => {}
-                    },
-                    CurrentScreen::Exiting => match key.code {
-                        KeyCode::Char('y') => {
-                            return Ok(true);
-                        }
-                        KeyCode::Char('n') | KeyCode::Char('q') => {
-                            app.current_screen = CurrentScreen::Main;
-                            continue;
-                        }
-                        _ => {}
-                    },
-                    _ => {}
-                }
-            }
+fn main() {
+    {
+        {
+            let mut forest2 = Forest::new(20000, 20000);
+            forest2.create_alive_trees2(85);
         }
+        // loop {
+        //     forest.spread_fire();
+        //     if forest.trees_last_burned_positions.is_empty() {
+        //         break;
+        //     }
+        // }
     }
 }
