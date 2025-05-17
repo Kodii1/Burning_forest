@@ -9,7 +9,7 @@ fn main() {
     loop {
         density += 10;
         let mut forest = Forest::new(20000, 20000);
-        forest.create_alive_trees(density);
+        forest.create_alive_trees2(density);
         forest.fire_random_tree();
 
         loop {

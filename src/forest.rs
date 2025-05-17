@@ -10,7 +10,6 @@ pub enum TreeState {
     Burned = 1,
     Alive = 2,
 }
-
 impl TryFrom<u8> for TreeState {
     type Error = ();
 
@@ -23,13 +22,13 @@ impl TryFrom<u8> for TreeState {
         }
     }
 }
-
 #[derive(Debug)]
 pub struct Forest {
     pub size: (usize, usize), // (rows, cols)
     pub trees_last_burned_positions: Vec<(usize, usize)>,
     pub data: Vec<TreeState>,
     pub burned: usize,
+    pub alive: usize,
 }
 
 impl Forest {
@@ -39,6 +38,7 @@ impl Forest {
             trees_last_burned_positions: Vec::new(),
             size: (rows, cols),
             data: vec![TreeState::None; rows * cols],
+            alive: 0,
         }
     }
 
@@ -52,6 +52,7 @@ impl Forest {
         for row in 0..self.size.0 {
             for col in 0..self.size.1 {
                 if alive_count >= target_alive {
+                    self.alive = alive_count;
                     return;
                 }
                 let probability = (target_alive - alive_count) as f64 / remaining_cells as f64;
@@ -62,6 +63,7 @@ impl Forest {
                 remaining_cells -= 1;
             }
         }
+        self.alive = alive_count;
     }
 
     pub fn create_alive_trees(&mut self, persent: usize) {
@@ -77,6 +79,7 @@ impl Forest {
                 }
             }
         }
+        self.alive = alive_count;
         self.data.shuffle(&mut rng());
     }
 
