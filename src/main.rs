@@ -13,9 +13,10 @@ struct Config {
 fn main() {
     let cfg = setup();
     let size = cfg.size;
-    let mut data: Vec<(f32, f32)> = Vec::new();
+    let mut data: Vec<(f32, f32)> = Vec::with_capacity(cfg.iterations);
 
-    for _iter in 0..cfg.iterations {
+    for iter in 0..cfg.iterations {
+        println!("Iteration: {}", iter);
         let mut density = 0.0;
         while density < 100.0 {
             density += cfg.density;
