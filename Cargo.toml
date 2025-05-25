@@ -5,13 +5,12 @@ edition = "2024"
 
 [dependencies]
 rand = "0.9.1"
-color-eyre ="*"
 plotters = "*"
-rayon ="*"
-atomic_enum = "*"
+ordered-float = "5.0.0"
 
 [profile.release]
 # debug = true
 opt-level = 3
 lto = true
 split-debuginfo = "packed"
+ordered-float = "*"

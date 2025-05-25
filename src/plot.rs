@@ -1,7 +1,7 @@
 use plotters::prelude::*;
 
-pub fn main(dane: &Vec<(f32, f32)>) -> Result<(), Box<dyn std::error::Error>> {
-    let root_area = BitMapBackend::new("wykres.png", (1000, 800)).into_drawing_area();
+pub fn create_plot(data: &Vec<(f32, f32)>) -> Result<(), Box<dyn std::error::Error>> {
+    let root_area = BitMapBackend::new("wykres.png", (1600, 1200)).into_drawing_area();
     root_area.fill(&WHITE)?;
 
     let mut ctx = ChartBuilder::on(&root_area)
@@ -13,15 +13,19 @@ pub fn main(dane: &Vec<(f32, f32)>) -> Result<(), Box<dyn std::error::Error>> {
     ctx.configure_mesh()
         .x_desc("Procent gęstości drzew")
         .y_desc("Procent spalenia drzew")
-        .x_labels(10)
-        .y_labels(10)
+        .x_labels(11)
+        .y_labels(11)
+        .x_label_formatter(&|v| format!("{:.0}%", v))
+        .y_label_formatter(&|v| format!("{:.0}%", v))
+        .x_label_offset(5)
+        .y_label_offset(5)
         .draw()?;
 
-    ctx.draw_series(LineSeries::new(dane.clone(), &RED))?;
+    ctx.draw_series(LineSeries::new(data.clone(), &RED))?;
 
     ctx.draw_series(PointSeries::<_, _, Circle<_, _>, _>::new(
-        dane.clone(),
-        5,
+        data.clone(),
+        2,
         &RED,
     ))?;
 
