@@ -4,7 +4,7 @@
 How to use ?
 cargo build --release
 
-./target/release/BurningForest -d (usize) -i (usize) -x (usize) -y (usize)
+./target/release/BurningForest -d (f32) -i (usize) -x (usize) -y (usize)
 
 -d -> how much will the forestation increase
 
@@ -23,5 +23,5 @@ default values:
 x: 4000,
 y: 4000,
 iterations: 10,
-density: 5,
+density: 5.0,
 
